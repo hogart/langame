@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>game</title>
+
+  <script src="js/requireConfig.js"></script>
+  <script>//window.onerror = function (msg, file, line) { alert([msg, file, line].join()) }
+    var hasPort = !!window.location.port, // port is not 80
+        isFile = location.protocol.indexOf('file') != -1; // launched from local filesystem
+    if (hasPort || isFile) { // so serving debug version
+      document.write('<link rel="stylesheet" href="app.css"/>');
+    } else {
+      document.write('<link rel="stylesheet" href="app-min.css"/>');
+      require.paths['app'] = '../app-min';
+    }
+  </script>
+
+  <script src="js/lib/vendor/require.js" data-main="app"></script>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="navbar">
+      <div class="navbar-inner">
+        <span class="brand">SpellCraft</span>
+        <ul class="nav js-player">
+          <li><p class="navbar-text">Здоровье: <span data-text="model.health" class="badge"></span>&nbsp;</p></li>
+          <li><p class="navbar-text">Деньги: <span data-text="model.money" class="badge"></span></p></li>
+        </ul>
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span3 hidden-phone hidden-tablet"></div>
+      <div class="span6">
+        <div class="js-gameFeed">
+          <p data-text="model.desc"></p>
+          <div data-show="model.validator">
+            <input type="text"/>
+            <button class="js-answer">»</button>
+          </div>
+          <div data-hide="model.validator">
+            <button class="js-next">»</button>
+          </div>
+        </div>
+      </div>
+      <div class="span3 hidden-phone hidden-tablet"></div>
+    </div>
+  </div>
+</body>
+</html>
