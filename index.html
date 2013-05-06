@@ -34,14 +34,21 @@
       <div class="span3 hidden-phone hidden-tablet"></div>
       <div class="span6">
         <div class="js-gameFeed">
-          <p data-text="model.desc"></p>
-          <div data-show="model.validator">
+          <ul data-title="list.length">
+            <li data-each-event="list.models">
+                <p data-text="event.desc"></p>
+            </li>
+          </ul>
+
+          <p data-text="current.desc"></p>
+          <div data-show="current.validator">
             <input type="text"/>
             <button class="js-answer">»</button>
           </div>
-          <div data-hide="model.validator">
+          <div data-hide="current.validator">
             <button class="js-next">»</button>
           </div>
+
         </div>
       </div>
       <div class="span3 hidden-phone hidden-tablet"></div>

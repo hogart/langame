@@ -13,17 +13,18 @@ define(
             },
 
             initialize: function (attributes, options) {
-                ModelEvent.__super__.call(this, attributes, options);
+                ModelEvent.__super__.initialize.call(this, attributes, options);
 
                 this.currentHint = 0;
             },
 
-            validate: function (attributes) {
+            answer: function (attributes) {
                 var validator = this.get('validator'),
                     result;
 
                 if (!validator) {
-                    this.collection.next();
+                    this.collection.next(this);
+                    return;
                 }
 
                 if (_.isRegExp(validator)) {
@@ -39,7 +40,7 @@ define(
                         return
                     }
 
-                    if (this.registry.get('difficulty') <= this.currentHint) {
+                    if (this.registry.acquire('difficulty') <= this.currentHint) {
                         var hint = this.get('hints')[this.currentHint],
                             isLastHint = !!this.get('hints')[this.currentHint + 1];
 
@@ -47,6 +48,28 @@ define(
                         this.currentHint++;
                     }
                 }
+            },
+
+            parse: function (rawData) {
+                var validator = rawData.validator;
+
+                if (validator) {
+                    if (_.isArray(validator)) {
+                        validator = validator.join('\n');
+                    };
+
+                    if (validator.startWith('/') && (validator.endsWith('/') || validator.endsWith('/i'))) { // is regexp
+                        rawData.valdator = new RegExp(validator + 'm');
+                    } else { // is function
+                        rawData.validator = new Function('answer, player, game', validator);
+                    }
+                }
+
+                if (_.isArray(rawData.desc)) {
+                    rawData.desc = rawData.join('\n');
+                }
+
+                return rawData;
             }
         });
 

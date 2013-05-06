@@ -1,9 +1,10 @@
 define(
     [
         'Skull',
-        'View/Player'
+        'View/Player',
+        'View/GameFeed'
     ],
-    function (Skull, ViewPlayer) {
+    function (Skull, ViewPlayer, ViewGameFeed) {
         'use strict';
 
         var ViewRoot = Skull.View.extend({
@@ -12,7 +13,8 @@ define(
             },
 
             __children__: {
-                '.js-player': ViewPlayer
+                '.js-player': ViewPlayer,
+                '.js-gameFeed': ViewGameFeed
             },
 
             __static__: true,

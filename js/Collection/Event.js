@@ -1,9 +1,10 @@
 define(
     [
         'Collection/Abstract',
+        'Model/Event',
         'underscore'
     ],
-    function (CollectionAbstract, _) {
+    function (CollectionAbstract, ModelEvent, _) {
         'use strict';
 
         var CollectionEvent = CollectionAbstract.extend({
@@ -12,6 +13,8 @@ define(
                 player: 'player',
                 game: 'game'
             },
+
+            model: ModelEvent,
 
             url: function () {
                 return this.registry.acquire('gameDataUrl');

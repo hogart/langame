@@ -18,7 +18,7 @@ define(
 
                 var game = new ModelGame({}, {registry: this.registry});
                 this.registry.register('game', game);
-                game.on('syncEnd', this.start, this);
+                game.on('syncEnd', App.__super__.start, this);
 
                 game.fetch();
             }

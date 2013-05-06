@@ -15,17 +15,23 @@ define(
             },
 
             fetch: function () {
-                this.events.fetch({reset: true}, {success: this.onEventsLoaded.bind(this)});
+                return this.events.fetch(
+                    {
+                        reset: true,
+                        success: this.onEventsLoaded.bind(this)
+                    }
+                );
             },
 
             onEventsLoaded: function () {
                 this.listenTo(this.events, 'currentEvent', this.onEventChange);
+                this.events.goTo('preamble1');
                 this.trigger('syncEnd');
             },
 
             onEventChange: function (currentEvent) {
                 this.event = currentEvent;
-                this.trigger('change:event');
+                this.trigger('change:event', this.event);
             }
         });
 
