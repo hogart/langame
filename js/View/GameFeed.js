@@ -61,6 +61,7 @@ define(
                             current.addClass('currentEvent__hidden').removeClass('currentEvent__visible');
                         this.ui.input.val('');
 
+                        this.model.clear();
                         this.model.set(newEvent.toJSON());
                         setTimeout(function () {
                             current.removeClass('currentEvent__hidden').addClass('currentEvent__visible');
