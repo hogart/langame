@@ -12,6 +12,8 @@ define(
 
                 this.registry.register('storageSyncer', new StorageSyncer({registry: this.registry}));
 
+                this.registry.register('difficulty', 10);
+
                 var player = new ModelPlayer({}, {registry: this.registry});
                 this.registry.register('player', player);
                 player.fetch();

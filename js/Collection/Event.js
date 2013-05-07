@@ -36,6 +36,14 @@ define(
                 } else {
                     throw new Error('Invalid transition to next quest: ' + id);
                 }
+            },
+
+            parse: function (rawData) {
+                var data = rawData.map(function (item) {
+                    return this.model.prototype.parse(item)
+                }, this);
+
+                return rawData
             }
         });
 

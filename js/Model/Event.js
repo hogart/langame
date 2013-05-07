@@ -15,6 +15,11 @@ define(
             initialize: function (attributes, options) {
                 ModelEvent.__super__.initialize.call(this, attributes, options);
 
+                this.set({
+                    hint: '',
+                    isLastHint: false
+                });
+
                 this.currentHint = 0;
             },
 
@@ -39,14 +44,20 @@ define(
                     if (this.player.isDead()) {
                         return
                     }
+                }
+            },
 
-                    if (this.registry.acquire('difficulty') <= this.currentHint) {
-                        var hint = this.get('hints')[this.currentHint],
-                            isLastHint = !!this.get('hints')[this.currentHint + 1];
+            onHint: function () {
+                if (this.registry.acquire('difficulty') >= this.currentHint) {
+                    var hint = this.get('hints')[this.currentHint],
+                        isLastHint = !this.get('hints')[this.currentHint + 1];
 
-                        this.trigger('hint', hint, isLastHint);
-                        this.currentHint++;
-                    }
+                    this.set({
+                        hint: hint,
+                        isLastHint: isLastHint
+                    });
+
+                    this.currentHint++;
                 }
             },
 
@@ -56,18 +67,31 @@ define(
                 if (validator) {
                     if (_.isArray(validator)) {
                         validator = validator.join('\n');
-                    };
+                    }
 
-                    if (validator.startWith('/') && (validator.endsWith('/') || validator.endsWith('/i'))) { // is regexp
-                        rawData.valdator = new RegExp(validator + 'm');
+                    var isRE = /^(?:\/(.*)?\/)(i?)$/,
+                        result = isRE.exec(validator);
+
+                    if (result && result.length) { // is regexp
+                        rawData.validator = new RegExp(result[1], result[2] + 'm');
                     } else { // is function
                         rawData.validator = new Function('answer, player, game', validator);
                     }
                 }
 
-                if (_.isArray(rawData.desc)) {
-                    rawData.desc = rawData.join('\n');
+                var desc = rawData.desc;
+                if (_.isArray(desc)) {
+                    desc = desc.join('\n');
                 }
+
+                desc = desc.replace(
+                    /\[([^|\]]+?)\|([^\]]+?)\]/img,
+                    function (match, $1, $2) {
+                        return '<a href="' + $2 + '">' + $1 + '</a>'
+                    }
+                );
+
+                rawData.desc = desc;
 
                 return rawData;
             }

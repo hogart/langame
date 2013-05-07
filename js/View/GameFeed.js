@@ -8,7 +8,7 @@ define(
         'use strict';
 
         var ViewGameFeed = ViewActive.extend({
-            __static__: true,
+            tpl: 'gameFeed',
 
             __registry__: function () {
                 var r = _.clone(ViewGameFeed.__super__.__registry__);
@@ -34,6 +34,8 @@ define(
 
                 this.model = this.game.event;
                 this.collection = new Skull.Collection([], {registry: this.registry});
+                this.render();
+
                 this.game.on(
                     'change:event',
                     function (newEvent) {
@@ -42,8 +44,6 @@ define(
                     },
                     this
                 );
-
-                this.onRender();
             },
 
             onRender: function () {
