@@ -3828,7 +3828,7 @@ define('Model/Event',
                 desc = desc.replace(
                     /\[([^|\]]+?)\|([^\]]+?)\]/img,
                     function (match, $1, $2) {
-                        return '<a href="' + $2 + '">' + $1 + '</a>'
+                        return '<span class="js-transit pseudo" data-id="' + $2 + '">' + $1 + '</span>'
                     }
                 );
 
@@ -3927,6 +3927,10 @@ define('Model/Game',
             onEventChange: function (currentEvent) {
                 this.event = currentEvent;
                 this.trigger('change:event', this.event);
+            },
+
+            goTo: function (id) {
+                this.events.goTo(id);
             }
         });
 
@@ -3943,7 +3947,7 @@ define('Application',
     function (Skull, StorageSyncer, ModelPlayer, ModelGame) {
         var App = Skull.Application.extend({
             start: function () {
-                this.registry.register('gameDataUrl', '/gameData/data.json');
+                this.registry.register('gameDataUrl', 'gameData/data.json');
 
                 this.registry.register('storageSyncer', new StorageSyncer({registry: this.registry}));
 
@@ -4023,6 +4027,12 @@ define('View/GameFeed',
                 return r;
             },
 
+            __ui__: {
+                current: '.js-current',
+                input: 'input[type="text"]',
+                answer: ''
+            },
+
             events: {
                 'click .js-next': function () {
                     this.model.answer({});
@@ -4032,7 +4042,17 @@ define('View/GameFeed',
                     this.model.answer({
                         answer: this.$('input[type="text"]').val().trim()
                     })
-                }
+                },
+
+                'click .js-transit': function (evt) {
+                    var id = $(evt.target).attr('data-id');
+
+                    this.game.goTo(id);
+                }/*,
+
+                'keyup input[type="text"]': function () {
+                    this.ui.answer.prop('disabled', !!this.ui.current.val());
+                }*/
             },
 
             initialize: function (options) {
@@ -4046,7 +4066,16 @@ define('View/GameFeed',
                     'change:event',
                     function (newEvent) {
                         this.collection.add(this.model.toJSON());
-                        this.model.set(newEvent.toJSON())
+
+                        var current = this.ui.current;
+                            current.addClass('currentEvent__hidden').removeClass('currentEvent__visible');
+                        this.ui.input.val('');
+
+                        this.model.set(newEvent.toJSON());
+                        setTimeout(function () {
+                            current.removeClass('currentEvent__hidden').addClass('currentEvent__visible');
+                        }, 250)
+
                     },
                     this
                 );

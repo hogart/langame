@@ -1,0 +1,12 @@
+.currentEvent {
+}
+
+    .currentEvent__hidden {
+        opacity: 0;
+
+    }
+
+    .currentEvent__visible {
+        opacity: 1;
+        -webkit-transition: all .25s ease;
+    }

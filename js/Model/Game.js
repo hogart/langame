@@ -32,6 +32,10 @@ define(
             onEventChange: function (currentEvent) {
                 this.event = currentEvent;
                 this.trigger('change:event', this.event);
+            },
+
+            goTo: function (id) {
+                this.events.goTo(id);
             }
         });
 

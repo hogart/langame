@@ -45,13 +45,14 @@
 
   <div class="hidden">
     <script type="text/x-template" class="js-tpl-gameFeed">
-      <ul data-show="list.length" class="unstyled">
+      <ul data-show="list.length" class="unstyled muted">
         <li data-each-event="list.models">
-            <p data-text="event.desc"></p>
+            <p data-html="event.desc"></p>
+            <p class="alert alert-success" data-show="event.after" data-html="event.after"></p>
         </li>
       </ul>
 
-      <div>
+      <div class="currentEvent currentEvent__visible js-current">
         <p data-html="current.desc"></p>
 
         <div data-show="current.validator">

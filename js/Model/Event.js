@@ -87,7 +87,7 @@ define(
                 desc = desc.replace(
                     /\[([^|\]]+?)\|([^\]]+?)\]/img,
                     function (match, $1, $2) {
-                        return '<a href="' + $2 + '">' + $1 + '</a>'
+                        return '<span class="js-transit pseudo" data-id="' + $2 + '">' + $1 + '</span>'
                     }
                 );
 

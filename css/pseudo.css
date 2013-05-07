@@ -1,0 +1,11 @@
+.currentEvent {
+}
+    .pseudo {
+        color: #08c;
+        text-decoration: none;
+    }
+    .pseudo:hover,
+    .pseudo:focus {
+        color: #005580;
+        text-decoration: underline;
+    }

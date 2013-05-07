@@ -17,6 +17,12 @@ define(
                 return r;
             },
 
+            __ui__: {
+                current: '.js-current',
+                input: 'input[type="text"]',
+                answer: ''
+            },
+
             events: {
                 'click .js-next': function () {
                     this.model.answer({});
@@ -26,7 +32,17 @@ define(
                     this.model.answer({
                         answer: this.$('input[type="text"]').val().trim()
                     })
-                }
+                },
+
+                'click .js-transit': function (evt) {
+                    var id = $(evt.target).attr('data-id');
+
+                    this.game.goTo(id);
+                }/*,
+
+                'keyup input[type="text"]': function () {
+                    this.ui.answer.prop('disabled', !!this.ui.current.val());
+                }*/
             },
 
             initialize: function (options) {
@@ -40,7 +56,16 @@ define(
                     'change:event',
                     function (newEvent) {
                         this.collection.add(this.model.toJSON());
-                        this.model.set(newEvent.toJSON())
+
+                        var current = this.ui.current;
+                            current.addClass('currentEvent__hidden').removeClass('currentEvent__visible');
+                        this.ui.input.val('');
+
+                        this.model.set(newEvent.toJSON());
+                        setTimeout(function () {
+                            current.removeClass('currentEvent__hidden').addClass('currentEvent__visible');
+                        }, 250)
+
                     },
                     this
                 );
