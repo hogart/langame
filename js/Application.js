@@ -8,7 +8,7 @@ define(
     function (Skull, StorageSyncer, ModelPlayer, ModelGame) {
         var App = Skull.Application.extend({
             start: function () {
-                this.registry.register('gameDataUrl', '/gameData/data.json');
+                this.registry.register('gameDataUrl', 'gameData/data.json');
 
                 this.registry.register('storageSyncer', new StorageSyncer({registry: this.registry}));
 
