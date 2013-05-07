@@ -61,6 +61,12 @@ define(
                 }
             },
 
+            clear: function (options) {
+                this.currentHint = 0;
+
+                ModelEvent.__super__.clear.apply(this, _.toArray(arguments));
+            },
+
             parse: function (rawData) {
                 var validator = rawData.validator;
 

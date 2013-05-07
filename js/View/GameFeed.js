@@ -63,10 +63,10 @@ define(
 
                         this.model.clear();
                         this.model.set(newEvent.toJSON());
+
                         setTimeout(function () {
                             current.removeClass('currentEvent__hidden').addClass('currentEvent__visible');
                         }, 250)
-
                     },
                     this
                 );
