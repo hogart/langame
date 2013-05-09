@@ -3802,6 +3802,12 @@ define('Model/Event',
                 }
             },
 
+            clear: function (options) {
+                this.currentHint = 0;
+
+                ModelEvent.__super__.clear.apply(this, _.toArray(arguments));
+            },
+
             parse: function (rawData) {
                 var validator = rawData.validator;
 
@@ -4073,10 +4079,10 @@ define('View/GameFeed',
 
                         this.model.clear();
                         this.model.set(newEvent.toJSON());
+
                         setTimeout(function () {
                             current.removeClass('currentEvent__hidden').addClass('currentEvent__visible');
                         }, 250)
-
                     },
                     this
                 );
