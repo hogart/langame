@@ -12,6 +12,9 @@ define(
                 game: 'game'
             },
 
+            isRegexpRe: /^(?:\/(.*)?\/)(i?)$/,
+            hyperlinkRe: /\[([^|\]]+?)\|([^\]]+?)\]/img,
+
             initialize: function (attributes, options) {
                 ModelEvent.__super__.initialize.call(this, attributes, options);
 
@@ -42,7 +45,7 @@ define(
                     this.collection.next(this);
                 } else {
                     if (this.player.isDead()) {
-                        return
+                        return;
                     }
                 }
             },
@@ -75,8 +78,7 @@ define(
                         validator = validator.join('\n');
                     }
 
-                    var isRE = /^(?:\/(.*)?\/)(i?)$/,
-                        result = isRE.exec(validator);
+                    var result = this.isRegexpRe.exec(validator);
 
                     if (result && result.length) { // is regexp
                         rawData.validator = new RegExp(result[1], result[2] + 'm');
@@ -90,14 +92,20 @@ define(
                     desc = desc.join('\n');
                 }
 
-                desc = desc.replace(
-                    /\[([^|\]]+?)\|([^\]]+?)\]/img,
+                var activeDesc = desc.replace(
+                    this.hyperlinkRe,
                     function (match, $1, $2) {
                         return '<span class="js-transit pseudo" data-id="' + $2 + '">' + $1 + '</span>'
                     }
                 );
 
-                rawData.desc = desc;
+                rawData.activeDesc = activeDesc;
+                rawData.passedDesc = desc.replace(
+                    this.hyperlinkRe,
+                    function (match, $1, $2) {
+                        return $1
+                    }
+                );
 
                 return rawData;
             }

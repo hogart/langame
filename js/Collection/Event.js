@@ -39,11 +39,10 @@ define(
             },
 
             parse: function (rawData) {
-                var data = rawData.map(function (item) {
-                    return this.model.prototype.parse(item)
-                }, this);
+                var ctx = this.model.prototype,
+                    parse = ctx.parse.bind(ctx);
 
-                return rawData
+                return rawData.map(parse);
             }
         });
 
