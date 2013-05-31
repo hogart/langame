@@ -30,7 +30,7 @@ define(
                 var validator = this.get('validator'),
                     result;
 
-                if (!validator) {
+                if (!validator) { // just story event, pass to next
                     this.collection.next(this);
                     return;
                 }
@@ -38,14 +38,19 @@ define(
                 if (_.isRegExp(validator)) {
                     result = validator.test(attributes.answer);
                 } else if (_.isFunction(validator)) {
-                    result = validator(attributes.answer, this.player, this.game)
+                    result = validator(attributes.answer, this.player, this.game);
                 }
 
                 if (result) {
+                    this.player.buff(_.extend({sociability: 3}, this.get('buffs')));
                     this.collection.next(this);
                 } else {
+                    this.player.buff(_.extend({sociability: -3}, this.get('debuffs')));
+
                     if (this.player.isDead()) {
                         return;
+                    } else {
+                        this.trigger('wrongAnswer');
                     }
                 }
             },

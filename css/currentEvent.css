@@ -10,3 +10,11 @@
         opacity: 1;
         -webkit-transition: all .25s ease;
     }
+
+    .currentEvent .error {
+        color: #b94a48;
+        border-color: #e9322d;
+        -webkit-box-shadow: 0 0 6px #f8b9b7;
+        -moz-box-shadow: 0 0 6px #f8b9b7;
+        box-shadow: 0 0 6px #f8b9b7;
+    }
